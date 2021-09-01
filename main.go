@@ -7,7 +7,7 @@ import (
 )
 
 func hello(ctx context.Context, req events.APIGatewayRequest) string {
-	return req.Method
+	return "this is success"
 }
 
 func main() {
