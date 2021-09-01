@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"github.com/tencentyun/scf-go-lib/cloudfunction"
 	"github.com/tencentyun/scf-go-lib/events"
 )
@@ -12,7 +12,7 @@ type Body struct {
 	Msg  string
 }
 
-func hello(ctx context.Context, req events.APIGatewayRequest) (events.APIGatewayResponse, error) {
+func hello() (events.APIGatewayResponse, error) {
 	body := Body{
 		Code: 200,
 		Msg:  "success",
@@ -22,6 +22,17 @@ func hello(ctx context.Context, req events.APIGatewayRequest) (events.APIGateway
 		return events.APIGatewayResponse{}, err
 	}
 
+	if err != nil {
+		return events.APIGatewayResponse{}, err
+	}
+	server := gin.Default()
+	server.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "success",
+		})
+		return
+	})
+	err = server.Run(":9000")
 	if err != nil {
 		return events.APIGatewayResponse{}, err
 	}
